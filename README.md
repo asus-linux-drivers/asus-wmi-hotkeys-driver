@@ -5,6 +5,7 @@
 ## TODO:
 
 - [x] (Configurable support of key mapping)
+- [x] (Solved by the way: somehow is KEY_MICMUTE of value 248 changed to 240 https://elementaryos.stackexchange.com/questions/29784/asus-zenbook-alias-for-fnf9-microphone-mute-unmute)
 
 <br/>
 
