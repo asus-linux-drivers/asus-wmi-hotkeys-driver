@@ -13,24 +13,17 @@ Install required packages
 
 - Debian / Ubuntu / Linux Mint / Pop!_OS / Zorin OS:
 ```
-sudo apt install libevdev2 python3-libevdev i2c-tools git
+sudo apt install libevdev2 python3-libevdev git
 ```
 
 - Arch Linux / Manjaro:
 ```
-sudo pacman -S libevdev python-libevdev i2c-tools git
+sudo pacman -S libevdev python-libevdev git
 ```
 
 - Fedora:
 ```
-sudo dnf install libevdev python-libevdev i2c-tools git
-```
-
-
-Then enable i2c
-```
-sudo modprobe i2c-dev
-sudo i2cdetect -l
+sudo dnf install libevdev python-libevdev git
 ```
 
 Now you can get the latest ASUS WMI hotkeys driver for Linux from Git and install it using the following commands.
@@ -64,6 +57,6 @@ Thank you very much [github.com/mohamed-badaoui](github.com/mohamed-badaoui) and
 ## Existing similar projects
 
 - [python service] https://github.com/danahynes/Asus_L410M_WMI_Keys
-- [python service] This project with inspiration of work [python service, configurable, the most spread repository of numpad driver] https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver
+- [python service] This project as inspiration for work [python service, configurable, the most spread repository of numpad driver] https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver
 
 Why was this project created? As repository where i can implement ```Configurable support of key mapping```

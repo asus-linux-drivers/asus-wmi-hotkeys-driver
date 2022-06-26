@@ -8,27 +8,11 @@ then
 fi
 
 if [[ $(sudo apt install 2>/dev/null) ]]; then
-    echo 'apt is here' && sudo apt -y install libevdev2 python3-libevdev i2c-tools git
+    echo 'apt is here' && sudo apt -y install libevdev2 python3-libevdev git
 elif [[ $(sudo pacman -h 2>/dev/null) ]]; then
-    echo 'pacman is here' && sudo pacman --noconfirm -S libevdev python-libevdev i2c-tools git
+    echo 'pacman is here' && sudo pacman --noconfirm -S libevdev python-libevdev git
 elif [[ $(sudo dnf install 2>/dev/null) ]]; then
-    echo 'dnf is here' && sudo dnf -y install libevdev python-libevdev i2c-tools git
-fi
-
-modprobe i2c-dev
-
-# Checking if the i2c-dev module is successfuly loaded
-if [[ $? != 0 ]]
-then
-	echo "i2c-dev module cannot be loaded correctly. Make sur you have installed i2c-tools package"
-	exit 1
-fi
-
-interfaces=$(for i in $(i2cdetect -l | grep DesignWare | sed -r "s/^(i2c\-[0-9]+).*/\1/"); do echo $i; done)
-if [ -z "$interfaces" ]
-then
-    echo "No interface i2c found. Make sure you have installed libevdev packages"
-    exit 1
+    echo 'dnf is here' && sudo dnf -y install libevdev python-libevdev git
 fi
 
 if [[ -d keys_wmi_layouts/__pycache__ ]] ; then
@@ -63,8 +47,6 @@ mkdir -p /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts
 mkdir -p /var/log/asus_wmi_hotkeys-driver
 install asus_wmi_hotkeys.py /usr/share/asus_wmi_hotkeys-driver/
 install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts keys_wmi_layouts/*.py
-
-echo "i2c-dev" | tee /etc/modules-load.d/i2c-dev.conf >/dev/null
 
 systemctl enable asus_wmi_hotkeys
 
