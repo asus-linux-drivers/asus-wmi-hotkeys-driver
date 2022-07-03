@@ -1,6 +1,6 @@
 # Asus WMI hotkeys driver
 
-**Tested only on laptop Asus ZenBook UP5401EA** and system Elementary OS 6.1 Loki.
+**Tested only on laptop Asus ZenBook UP5401EA** and system Elementary OS 6.1 Jólnir.
 
 ## TODO:
 
