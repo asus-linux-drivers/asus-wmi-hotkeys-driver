@@ -32,6 +32,10 @@ do
             layout=up541ea
             break
             ;;
+            "fa507r" )
+            layout=fa507r
+            break
+            ;;
         "Q")
             exit 0
             ;;
