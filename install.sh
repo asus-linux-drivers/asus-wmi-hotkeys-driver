@@ -24,28 +24,30 @@ echo
 echo "Select key WMI layout:"
 PS3='Please enter your choice '
 options=($(ls keys_wmi_layouts) "Quit")
-select opt in "${options[@]}"
+select selected_opt in "${options[@]}"
 do
-    opt=${opt::-3}
-    case $opt in
-        "up541ea" )
-            layout=up541ea
+    if [ "$selected_opt" = "Quit" ]
+    then
+        exit 0
+    fi
+
+    for option in $(ls keys_wmi_layouts);
+    do
+        if [ "$option" = "$selected_opt" ] ; then
+            model=${selected_opt::-3}
             break
-            ;;
-            "fa507r" )
-            layout=fa507r
-            break
-            ;;
-        "Q")
-            exit 0
-            ;;
-        *)
-            echo "invalid option $REPLY";;
-    esac
+        fi
+    done
+
+    if [ -z "$model" ] ; then
+        echo "invalid option $REPLY"
+    else
+        break
+    fi
 done
 
 echo "Add asus WMI hotkeys service in /etc/systemd/system/"
-cat asus_wmi_hotkeys.service > /etc/systemd/system/asus_wmi_hotkeys.service
+cat asus_wmi_hotkeys.service | LAYOUT=$model envsubst '$LAYOUT' > /etc/systemd/system/asus_wmi_hotkeys.service
 
 mkdir -p /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts
 mkdir -p /var/log/asus_wmi_hotkeys-driver
