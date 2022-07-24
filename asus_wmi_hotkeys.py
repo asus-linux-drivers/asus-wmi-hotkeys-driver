@@ -94,7 +94,7 @@ while True:
     for e in d_t.events():
 
         log.debug(e)
-        
+
         find_key_mapping = list(filter(lambda x: e.value in x, keys_wmi_layouts.keys_wmi))
         if e.matches(EV_MSC.MSC_SCAN) and find_key_mapping:
 
