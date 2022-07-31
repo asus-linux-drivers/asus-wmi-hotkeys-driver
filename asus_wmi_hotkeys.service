@@ -5,8 +5,8 @@ Description=Asus WMI hotkeys handler
 Type=simple
 ExecStart=/usr/share/asus_wmi_hotkeys-driver/asus_wmi_hotkeys.py $LAYOUT
 StandardInput=tty-force
-StandardOutput=/var/log/asus_wmi_hotkeys-driver/error.log
-StandardError=/var/log/asus_wmi_hotkeys-driver/error.log
+StandardOutput=append:/var/log/asus_wmi_hotkeys-driver/error.log
+StandardError=append:/var/log/asus_wmi_hotkeys-driver/error.log
 TimeoutSec=5
 Restart=on-failure
 # For some operating systems with boot failure, adding this following property might resolve the issue  
