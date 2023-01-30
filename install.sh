@@ -8,11 +8,11 @@ then
 fi
 
 if [[ $(sudo apt install 2>/dev/null) ]]; then
-    echo 'apt is here' && sudo apt -y install libevdev2 python3-libevdev git
+    echo 'apt is here' && sudo apt -y install libevdev2 python3-libevdev
 elif [[ $(sudo pacman -h 2>/dev/null) ]]; then
-    echo 'pacman is here' && sudo pacman --noconfirm -S libevdev python-libevdev git
+    echo 'pacman is here' && sudo pacman --noconfirm -S libevdev python-libevdev
 elif [[ $(sudo dnf install 2>/dev/null) ]]; then
-    echo 'dnf is here' && sudo dnf -y install libevdev python-libevdev git
+    echo 'dnf is here' && sudo dnf -y install libevdev python-libevdev
 fi
 
 if [[ -d keys_wmi_layouts/__pycache__ ]] ; then
