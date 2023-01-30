@@ -30,7 +30,7 @@ sudo dnf install libevdev python-libevdev git
 
 Now you can get the latest ASUS WMI hotkeys driver for Linux from Git and install it using the following commands.
 ```
-git clone https://github.com/ldrahnik/asus-wmi-hotkeys-driver
+git clone https://github.com/asus-wmi-hotkeys-driver/asus-wmi-hotkeys-driver
 cd asus-wmi-hotkeys
 sudo ./install.sh
 ```
