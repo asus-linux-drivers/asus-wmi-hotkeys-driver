@@ -31,7 +31,7 @@ cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
 
 Discovered keys up to this moment which might be equal across models:
 
-**Model: UP5401EA**
+*Model: UP5401EA*
 ```
 KEY_WMI_TOUCHPAD = 0x6B # 107
 KEY_WMI_MICMUTE = 0x7C # 124
@@ -39,7 +39,7 @@ KEY_WMI_CAMERA = 0x85 # 133
 KEY_WMI_MYASUS = 0x86 # 134
 ```
 
-**Model: UX8402**
+*Model: UX8402*
 ```
 KEY_WMI_SCREENPAD = 0x6A #106
 KEY_WMI_SWITCHWINDOWS = 0x9C #156
