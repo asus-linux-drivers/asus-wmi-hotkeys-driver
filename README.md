@@ -8,7 +8,7 @@ The driver has been created for situation when special keys on laptop do not wor
 
 If you find the project useful, do not forget to give project a [![GitHub stars](https://img.shields.io/github/stars/asus-linux-drivers/asus-wmi-hotkeys-driver.svg?style=flat-square)](https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver/stargazers) People already did!
 
-**Installation**
+## Installation
 
 You can get the latest ASUS WMI hotkeys driver for Linux from Git and install it using the following commands.
 ```
@@ -22,7 +22,7 @@ To uninstall, just run:
 sudo .bash /uninstall.sh
 ```
 
-**Configuration**
+## Configuration
 
 Back-up of configuration is up to you as repository contains only examples for easy getting started. Config is located here:
 
@@ -46,7 +46,7 @@ KEY_WMI_SCREENPAD = 0x6A #106
 KEY_WMI_SWITCHWINDOWS = 0x9C #156
 ```
 
-**Troubleshooting**
+## Troubleshooting
 
 To activate logger, do in a console:
 ```
