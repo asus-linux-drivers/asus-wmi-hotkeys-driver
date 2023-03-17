@@ -29,7 +29,7 @@ PS3='Please enter your choice '
 options=($(ls -I $keys_wmi_layout_filename keys_wmi_layouts) "Quit")
 select selected_opt in "${options[@]}"
 do
-    if [ "$selected_keys_wmi_layout_filename" = "Quit" ]
+    if [ "$selected_opt" = "Quit" ]
     then
         exit 0
     fi
