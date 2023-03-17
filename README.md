@@ -12,14 +12,14 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 You can get the latest ASUS WMI hotkeys driver for Linux from Git and install it using the following commands.
 ```
-git clone https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver.git
-cd asus-wmi-hotkeys
-sudo bash ./install.sh
+$ git clone https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver.git
+$ cd asus-wmi-hotkeys
+$ sudo bash ./install.sh
 ```
 
 To uninstall, just run:
 ```
-sudo .bash /uninstall.sh
+$ sudo .bash /uninstall.sh
 ```
 
 ## Configuration
@@ -27,7 +27,7 @@ sudo .bash /uninstall.sh
 Back-up of configuration is up to you as repository contains only examples for easy getting started. Config is located here:
 
 ```
-cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
+$ cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
 ```
 
 Discovered keys up to this moment which might be equal across models:
@@ -55,7 +55,7 @@ KEY_WMI_FAN = 0x9D  # 157
 
 To activate logger, do in a console:
 ```
-LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py
+$ LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py
 ```
 
 ## Existing similar projects
