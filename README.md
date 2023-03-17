@@ -46,6 +46,11 @@ KEY_WMI_SCREENPAD = 0x6A #106
 KEY_WMI_SWITCHWINDOWS = 0x9C #156
 ```
 
+*Model: UX582X*
+```
+KEY_WMI_FAN = 0x9D  # 157
+```
+
 ## Troubleshooting
 
 To activate logger, do in a console:
