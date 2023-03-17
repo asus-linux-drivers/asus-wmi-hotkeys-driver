@@ -54,7 +54,7 @@ echo "Selected layout $selected_keys_wmi_layout_filename"
 echo "Selected key WMI layout can be futher modified here:"
 echo $keys_wmi_layout_installed_file
 
-cat asus_wmi_hotkeys.service | LAYOUT=$keys_wmi_layout_filename envsubst '$LAYOUT' > /etc/systemd/system/asus_wmi_hotkeys.service
+cat asus_wmi_hotkeys.service | LAYOUT=${keys_wmi_layout_filename::-3} envsubst '$LAYOUT' > /etc/systemd/system/asus_wmi_hotkeys.service
 
 mkdir -p /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts
 mkdir -p /var/log/asus_wmi_hotkeys-driver
@@ -70,7 +70,7 @@ if [ "$LAYOUT_DIFF" != "" ]
 then
     read -r -p "Was found layout from previous installation which differs compared to the selected one at this moment. Do you want anyway replace found layout with selected one at this moment? [y/N]" response
     case "$response" in [yY][eE][sS]|[yY])
-		install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$selected_keys_wmi_layout_filename
+		install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$keys_wmi_layout_filename
         ;;
     *)
         LAYOUT="/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
@@ -84,9 +84,11 @@ then
         echo $LAYOUT
         ;;
     esac
+else
+    install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$keys_wmi_layout_filename
 fi
 
-systemctl enable asus_wmi_hotkeys
+systemctl enable asus_wmi_hotkeys.service
 
 if [[ $? != 0 ]]
 then
@@ -96,7 +98,7 @@ else
 	echo "Asus WMI hotkeys service enabled"
 fi
 
-systemctl restart asus_wmi_hotkeys
+systemctl restart asus_wmi_hotkeys.service
 if [[ $? != 0 ]]
 then
 	echo "Something gone wrong while enabling asus_wmi_hotkeys.service"
