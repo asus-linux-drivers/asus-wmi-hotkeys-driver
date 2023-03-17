@@ -70,7 +70,7 @@ if [ "$LAYOUT_DIFF" != "" ]
 then
     read -r -p "Was found layout from previous installation which differs compared to the selected one at this moment. Do you want anyway replace found layout with selected one at this moment? [y/N]" response
     case "$response" in [yY][eE][sS]|[yY])
-		install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$keys_wmi_layout_filename
+		install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$selected_keys_wmi_layout_filename
         ;;
     *)
         LAYOUT="/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
