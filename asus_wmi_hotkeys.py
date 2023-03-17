@@ -17,7 +17,7 @@ log = logging.getLogger('Asus WMI additional hotkeys')
 log.setLevel(os.environ.get('LOG', 'INFO'))
 
 # Layout of key mapping
-layout = 'up541ea'
+layout = 'up5401ea'
 if len(sys.argv) > 1:
     layout = sys.argv[1]
 
