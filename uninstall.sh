@@ -9,24 +9,24 @@ fi
 # for `rm` exclude !(xy)
 shopt -s extglob
 
-systemctl stop asus_wmi_hotkeys
+systemctl stop asus_wmi_hotkeys.service
 if [[ $? != 0 ]]
 then
 	echo "asus_wmi_hotkeys.service cannot be stopped correctly..."
 	exit 1
 fi
 
-systemctl disable asus_wmi_hotkeys
+systemctl disable asus_wmi_hotkeys.service
 if [[ $? != 0 ]]
 then
 	echo "asus_wmi_hotkeys.service cannot be disabled correctly..."
 	exit 1
 fi
 
-rm -f /lib/systemd/system/asus_wmi_hotkeys.service
+rm -f /etc/systemd/system/asus_wmi_hotkeys.service
 if [[ $? != 0 ]]
 then
-	echo "/lib/systemd/system/asus_wmi_hotkeys.service cannot be removed correctly..."
+	echo "/etc/systemd/system/asus_wmi_hotkeys.service cannot be removed correctly..."
 	exit 1
 fi
 
