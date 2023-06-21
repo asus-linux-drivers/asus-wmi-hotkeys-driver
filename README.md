@@ -19,7 +19,7 @@ $ sudo bash ./install.sh
 
 To uninstall, just run:
 ```
-$ sudo .bash /uninstall.sh
+$ sudo bash ./uninstall.sh
 ```
 
 ## Configuration
