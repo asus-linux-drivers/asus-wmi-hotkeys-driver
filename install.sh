@@ -88,6 +88,15 @@ else
     install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$keys_wmi_layout_filename
 fi
 
+systemctl daemon-reload
+
+if [[ $? != 0 ]]; then
+    echo "Something went wrong when was called systemctl daemon reload"
+    exit 1
+else
+    echo "Systemctl daemon realod called succesfully"
+fi
+
 systemctl enable asus_wmi_hotkeys.service
 
 if [[ $? != 0 ]]
