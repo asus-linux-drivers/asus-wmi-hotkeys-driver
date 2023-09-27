@@ -33,9 +33,31 @@ $ libinput debug-events`
 -event4 DEVICE_ADDED Asus WMI hotkeys seat0 default group9 cap:ksudo evemu-record /dev/input/event4
 ...
 ```
-- Listen for found event number and press the key you want bind to something else for example like this:
+- Listen for found event number and press the key you want bind to something else for example using `$ sudo evtest /dev/input/event4` (which returns already hex values) or `$ sudo evemu-record /dev/input/event4` (where values has to be converted from decimal to hex):
 ```
-sudo evemu-record /dev/input/event4
+$ sudo evtest
+...
+/dev/input/event4:	Asus WMI hotkeys
+...
+Select the device event number [0-24]: 4
+
+Event: time 1695811053.452927, type 4 (EV_MSC), code 4 (MSC_SCAN), value 7c
+Event: time 1695811053.452927, type 1 (EV_KEY), code 248 (KEY_MICMUTE), value 1
+Event: time 1695811053.452927, -------------- SYN_REPORT ------------
+Event: time 1695811053.452938, type 1 (EV_KEY), code 248 (KEY_MICMUTE), value 0
+Event: time 1695811053.452938, -------------- SYN_REPORT ------------
+Event: time 1695811057.648891, type 4 (EV_MSC), code 4 (MSC_SCAN), value 85
+Event: time 1695811057.648891, type 1 (EV_KEY), code 212 (KEY_CAMERA), value 1
+Event: time 1695811057.648891, -------------- SYN_REPORT ------------
+Event: time 1695811057.648901, type 1 (EV_KEY), code 212 (KEY_CAMERA), value 0
+Event: time 1695811057.648901, -------------- SYN_REPORT ------------
+Event: time 1695811059.000888, type 4 (EV_MSC), code 4 (MSC_SCAN), value 6b
+Event: time 1695811059.000888, type 1 (EV_KEY), code 191 (KEY_F21), value 1
+Event: time 1695811059.000888, -------------- SYN_REPORT ------------
+Event: time 1695811059.000898, type 1 (EV_KEY), code 191 (KEY_F21), value 0
+Event: time 1695811059.000898, -------------- SYN_REPORT ------------
+
+$ sudo evemu-record /dev/input/event4
 ...
 E: 0.000001 0004 0004 0107	# EV_MSC / MSC_SCAN             107
 E: 0.000001 0001 00bf 0001	# EV_KEY / KEY_F21              1
@@ -60,7 +82,7 @@ E: 5.003972 0000 0000 0000	# ------------ SYN_REPORT (0) ---------- +0ms
 ```
 - Discovered `EV_MSC / MSC_SCAN` value use in hexa format in config aswell as appropriate key to which you want bind that key, for example:
 
- ```
+```
 from libevdev import EV_KEY
 
 KEY_WMI_TOUCHPAD = 0x6B # 107
