@@ -92,15 +92,7 @@ keys_wmi = [
 ]
 ```
 
-## Configuration
- 
-Back-up of configuration is up to you as repository contains only examples for easy getting started. Config is located here:
- 
-```
-$ cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
-```
- 
-Discovered keys up to this moment which might be equal across models:
+- Discovered keys up to this moment that might be equal across models:
  
 *Model: UP5401EA*
 ```
@@ -119,6 +111,14 @@ KEY_WMI_SWITCHWINDOWS = 0x9C #156
 *Model: UX582X*
 ```
 KEY_WMI_FAN = 0x9D # 157
+```
+
+## Configuration
+ 
+Back-up of configuration is up to you as repository contains only examples for easy getting started. Config is located here:
+ 
+```
+$ cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
 ```
  
 ## Troubleshooting
