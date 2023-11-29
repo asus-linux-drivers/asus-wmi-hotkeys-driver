@@ -1,7 +1,9 @@
 # Asus WMI hotkeys driver
  
-The driver has been created for situation when special keys on laptop do not work. The driver works as middle-man, is listening for events and when is appropriate key event caught then is send custom event configured in config file. 
- 
+The driver has been created for situation when special keys on laptop do not work. The driver works as middle-man, is listening for events and when is appropriate key event caught then is send custom event configured in config file.
+
+One additional feature (up-to-now) is changing state of microphone mute key LED (if keyboard has it).
+
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.0.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fasus-linux-drivers%2Fasus-wmi-hotkeys-driver&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
