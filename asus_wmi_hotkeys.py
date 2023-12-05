@@ -6,6 +6,7 @@ import os
 import re
 import sys
 from typing import Optional
+import subprocess
 
 from libevdev import EV_SYN, EV_MSC, Device, InputEvent
 
@@ -88,6 +89,9 @@ for key in keys_wmi_layouts.keys_wmi:
 
 udev = dev.create_uinput_device()
 
+KEY_WMI_MICMUTE = 0x7C # 124
+KEY_WMI_MICMUTE_LED_PATH = '/sys/class/leds/platform::micmute/brightness'
+
 while True:
 
     # If Asus WMI hotkeys sends something
@@ -95,25 +99,50 @@ while True:
 
         log.debug(e)
 
-        find_key_mapping = list(filter(lambda x: e.value in x, keys_wmi_layouts.keys_wmi))
-        if e.matches(EV_MSC.MSC_SCAN) and find_key_mapping:
+        if e.matches(EV_MSC.MSC_SCAN):
 
-            keys_to_send_press_events = []
-            for keys_to_send_press in find_key_mapping[0][1:]:
-                keys_to_send_press_events.append(InputEvent(keys_to_send_press, 1))
+            find_custom_key_mapping = list(filter(lambda x: e.value in x, keys_wmi_layouts.keys_wmi))
+        
+            if find_custom_key_mapping:
 
-            keys_to_send_release_events = []
-            for keys_to_send_release in find_key_mapping[0][1:]:
-                keys_to_send_release_events.append(InputEvent(keys_to_send_release, 0))
+                keys_to_send_press_events = []
+                for keys_to_send_press in find_custom_key_mapping[0][1:]:
+                    keys_to_send_press_events.append(InputEvent(keys_to_send_press, 1))
 
-            sync_event = [
-                InputEvent(EV_SYN.SYN_REPORT, 0)
-            ]
+                keys_to_send_release_events = []
+                for keys_to_send_release in find_custom_key_mapping[0][1:]:
+                    keys_to_send_release_events.append(InputEvent(keys_to_send_release, 0))
 
-            try:
-                udev.send_events(keys_to_send_press_events)
-                udev.send_events(sync_event)
-                udev.send_events(keys_to_send_release_events)
-                udev.send_events(sync_event)
-            except OSError as e:
-                log.error("Cannot send event, %s", e)
+                sync_event = [
+                    InputEvent(EV_SYN.SYN_REPORT, 0)
+                ]
+
+                try:
+                    udev.send_events(keys_to_send_press_events)
+                    udev.send_events(sync_event)
+                    udev.send_events(keys_to_send_release_events)
+                    udev.send_events(sync_event)
+                except OSError as e:
+                    log.error("Cannot send event, %s", e)
+
+            if e.value == KEY_WMI_MICMUTE:
+
+                cmd = ["cat", KEY_WMI_MICMUTE_LED_PATH]
+                log.debug(cmd)
+
+                try:
+                    prop_data = subprocess.check_output(cmd)
+
+                    mic_mute = prop_data.decode().strip()
+
+                    new_mic_mute = 0
+
+                    if mic_mute == '0':
+                        new_mic_mute = 1
+
+                    cmd = "echo " + str(new_mic_mute) + "| sudo tee -a '" + KEY_WMI_MICMUTE_LED_PATH + "'"
+                    log.debug(cmd)
+
+                    subprocess.call(cmd, shell=True)
+                except subprocess.CalledProcessError as e:
+                    log.error('Error during changing mic mute led state: \"%s\"', e.output)
