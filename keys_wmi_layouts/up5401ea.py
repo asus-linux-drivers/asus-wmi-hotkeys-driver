@@ -10,11 +10,6 @@ key_wmi_touchpad = [
     EV_KEY.KEY_TOUCHPAD_TOGGLE
 ]
 
-key_wmi_camera = [
-    KEY_WMI_CAMERA,
-    EV_KEY.KEY_CAMERA
-]
-
 key_wmi_myasus = [
     KEY_WMI_MYASUS,
     EV_KEY.KEY_LEFTSHIFT,
@@ -23,7 +18,6 @@ key_wmi_myasus = [
 ]
 
 keys_wmi = [
-    key_wmi_camera,
     key_wmi_myasus,
     key_wmi_touchpad
 ]
