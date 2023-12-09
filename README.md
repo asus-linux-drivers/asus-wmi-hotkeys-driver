@@ -1,8 +1,6 @@
 # Asus WMI hotkeys driver
  
-The driver has been created for situation when special keys on laptop do not work. The driver works as middle-man, is listening for events and when is appropriate key event caught then is send custom event configured in config file.
-
-One additional feature (up-to-now) is changing state of microphone mute key LED (if keyboard has it).
+The driver has been created for situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionaly toggled LED status and optionaly send custom key event configured in config file.
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.0.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
@@ -116,7 +114,9 @@ keys_wmi = [
 ]
 ```
 
-- Discovered keys up to this moment that might be equal across models:
+How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (**FIRST!** change range of tested ids in script row `5` for example to `60000..60100`, do not worry, read value is after 1s set up back, script changes anything) and during is script running check by eyes whether is LED activated on 1s (is used 1s pause between each dev id)
+
+- Discovered keys and associated leds up to this moment that might be equal across models:
  
 *Model: UP5401EA*
 ```
@@ -124,6 +124,9 @@ KEY_WMI_TOUCHPAD = 0x6B # 107
 KEY_WMI_MICMUTE = 0x7C # 124
 KEY_WMI_CAMERA = 0x85 # 133
 KEY_WMI_MYASUS = 0x86 # 134
+
+KEY_WMI_MICMUTE_LED = 0x00040017
+KEY_WMI_CAMERA_LED = 0x00060079
 ```
  
 *Model: UX8402*
@@ -139,6 +142,27 @@ KEY_WMI_FAN = 0x9D # 157
 
 ## Configuration
  
+For example:
+
+```
+# fix only key
+key_wmi_camera = [
+    KEY_WMI_CAMERA,
+    EV_KEY.SOME_KEY
+]
+# fix only led
+key_wmi_camera = [
+    KEY_WMI_CAMERA,
+    KEY_WMI_CAMERA_LED
+]
+# fix key and fix led too
+key_wmi_camera = [
+    KEY_WMI_CAMERA,
+    KEY_WMI_CAMERA_LED
+    EV_KEY.SOME_KEY
+]
+```
+
 Back-up of configuration is up to you as repository contains only examples for easy getting started. Config is located here:
  
 ```
