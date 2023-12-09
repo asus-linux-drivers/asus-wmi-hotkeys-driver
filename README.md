@@ -1,6 +1,6 @@
 # Asus WMI hotkeys driver
  
-The driver has been created for situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionaly toggled LED status and optionaly send custom key event configured in config file.
+The driver has been created for the situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules yet). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionally toggled LED status and also optionally send another custom key event configured in config file.
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.0.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
