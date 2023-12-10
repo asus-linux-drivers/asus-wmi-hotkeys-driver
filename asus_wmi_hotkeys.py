@@ -8,6 +8,8 @@ import sys
 from typing import Optional
 import subprocess
 from libevdev import EV_KEY, EV_SYN, EV_MSC, Device, InputEvent
+from os import access, R_OK
+from os.path import isfile
 
 # Setup logging
 # LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py  # all messages
@@ -112,39 +114,61 @@ while True:
 
             if len(find_custom_key_mapping[0]) > 1 and not isEventKey(find_custom_key_mapping[0][1]):
                 try:
-                    # Access to specific device led id
-                    dev_id = hex(find_custom_key_mapping[0][1])
+                    # Is it path to brightness file created by kernel module?
+                    if isfile(find_custom_key_mapping[0][1]) and access(find_custom_key_mapping[0][1], R_OK):
 
-                    cmd = "echo " + str(dev_id) + "| sudo tee '/sys/kernel/debug/asus-nb-wmi/dev_id' >/dev/null"
-                    log.debug(cmd)
+                        cmd = ["cat", find_custom_key_mapping[0][1]]
+                        log.debug(cmd)
+                        prop_data = subprocess.check_output(cmd)
 
-                    subprocess.call(cmd, shell=True)
+                        brightness_value = prop_data.decode().strip()
 
-                    # Read device led value
-                    cmd = "cat '/sys/kernel/debug/asus-nb-wmi/dsts'"
-                    log.debug(cmd)
-                    prop_data = subprocess.check_output(cmd, shell=True)
+                        new_brightness_value = 0
 
-                    led_state = prop_data.decode().split(" ")[len(prop_data.decode().split(" ")) - 1].strip()
+                        if brightness_value == '0':
+                            new_brightness_value = 1
 
-                    # Prepare opposite led value to device (on/off)
-                    new_led_state = hex(1)
+                        cmd = "echo " + str(new_brightness_value) + "| sudo tee -a '" + find_custom_key_mapping[0][1] + "' >/dev/null"
+                        log.debug(cmd)
 
-                    led_state_hex = hex(int(led_state, 16))
-                    led_state_on_hex = hex(KEY_WMI_LED_ON)
-                    if led_state_hex == led_state_on_hex:
-                        new_led_state = hex(0)
+                        subprocess.call(cmd, shell=True)
 
-                    cmd = "echo " + str(new_led_state) + " | sudo tee '/sys/kernel/debug/asus-nb-wmi/ctrl_param' >/dev/null"
-                    log.debug(cmd)
+                    # Otherwise try use as device id for asus-nb-wmi module
+                    else:
 
-                    subprocess.call(cmd, shell=True)
+                        # Access to specific device led id
+                        dev_id = hex(find_custom_key_mapping[0][1])
 
-                    # Write opposite led value to device
-                    cmd = "cat '/sys/kernel/debug/asus-nb-wmi/devs' >/dev/null"
-                    log.debug(cmd)
+                        cmd = "echo " + str(dev_id) + "| sudo tee '/sys/kernel/debug/asus-nb-wmi/dev_id' >/dev/null"
+                        log.debug(cmd)
 
-                    subprocess.call(cmd, shell=True)
+                        subprocess.call(cmd, shell=True)
+
+                        # Read device led value
+                        cmd = "cat '/sys/kernel/debug/asus-nb-wmi/dsts'"
+                        log.debug(cmd)
+                        prop_data = subprocess.check_output(cmd, shell=True)
+
+                        led_state = prop_data.decode().split(" ")[len(prop_data.decode().split(" ")) - 1].strip()
+
+                        # Prepare opposite led value to device (on/off)
+                        new_led_state = hex(1)
+
+                        led_state_hex = hex(int(led_state, 16))
+                        led_state_on_hex = hex(KEY_WMI_LED_ON)
+                        if led_state_hex == led_state_on_hex:
+                            new_led_state = hex(0)
+
+                        cmd = "echo " + str(new_led_state) + " | sudo tee '/sys/kernel/debug/asus-nb-wmi/ctrl_param' >/dev/null"
+                        log.debug(cmd)
+
+                        subprocess.call(cmd, shell=True)
+
+                        # Write opposite led value to device
+                        cmd = "cat '/sys/kernel/debug/asus-nb-wmi/devs' >/dev/null"
+                        log.debug(cmd)
+
+                        subprocess.call(cmd, shell=True)
 
                 except subprocess.CalledProcessError as e:
                     log.error('Error during changing led state: \"%s\"', e.output)

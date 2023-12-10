@@ -5,7 +5,7 @@ KEY_WMI_MICMUTE = 0x7C # 124
 KEY_WMI_CAMERA = 0x85 # 133
 KEY_WMI_MYASUS = 0x86 # 134
 
-KEY_WMI_MICMUTE_LED = 0x00040017 # TODO: allow too '/sys/class/leds/platform::micmute/brightness' when kernel module is already created but is not associated led together with key?
+KEY_WMI_MICMUTE_LED = '/sys/class/leds/platform::micmute/brightness' # or 0x00040017
 KEY_WMI_CAMERA_LED = 0x00060079
 
 key_wmi_touchpad = [

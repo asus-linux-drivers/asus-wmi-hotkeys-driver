@@ -3,7 +3,7 @@
 The driver has been created for the situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules yet). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionally toggled LED status and also optionally send another custom key event configured in config file.
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.1.0.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
+[![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.1.1.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fasus-linux-drivers%2Fasus-wmi-hotkeys-driver&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
  
 If you find the project useful, do not forget to give project a [![GitHub stars](https://img.shields.io/github/stars/asus-linux-drivers/asus-wmi-hotkeys-driver.svg?style=flat-square)](https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver/stargazers) People already did!
@@ -14,8 +14,12 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
-- Allowed to fix any special Fn+ key including associated LED
+- Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files)
  
+## Requirements
+
+- (Optionally) For LEDs without kernel modules yet have mounted `asus-nb-wmi` kernel module via `debugfs` to `/sys/kernel/debug/asus-nb-wmi`
+
 ## Installation
  
 You can get the latest ASUS WMI hotkeys driver for Linux from Git and install it using the following commands.
@@ -116,7 +120,7 @@ KEY_WMI_MICMUTE = 0x7C # 124
 KEY_WMI_CAMERA = 0x85 # 133
 KEY_WMI_MYASUS = 0x86 # 134
 
-KEY_WMI_MICMUTE_LED = 0x00040017
+KEY_WMI_MICMUTE_LED = '/sys/class/leds/platform::micmute/brightness' # or 0x00040017
 KEY_WMI_CAMERA_LED = 0x00060079
 ```
  
