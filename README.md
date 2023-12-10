@@ -3,7 +3,7 @@
 The driver has been created for the situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules yet). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionally toggled LED status and also optionally send another custom key event configured in config file.
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.0.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
+[![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.0.1.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fasus-linux-drivers%2Fasus-wmi-hotkeys-driver&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
  
 If you find the project useful, do not forget to give project a [![GitHub stars](https://img.shields.io/github/stars/asus-linux-drivers/asus-wmi-hotkeys-driver.svg?style=flat-square)](https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver/stargazers) People already did!
@@ -90,35 +90,18 @@ E: 5.003972 0000 0000 0000	# ------------ SYN_REPORT (0) ---------- +0ms
 from libevdev import EV_KEY
 
 KEY_WMI_TOUCHPAD = 0x6B # 107
-KEY_WMI_MICMUTE = 0x7C # 124
-KEY_WMI_CAMERA = 0x85 # 133
-KEY_WMI_MYASUS = 0x86 # 134
 
 key_wmi_touchpad = [
     KEY_WMI_TOUCHPAD,
     EV_KEY.KEY_TOUCHPAD_TOGGLE
 ]
 
-key_wmi_camera = [
-    KEY_WMI_CAMERA,
-    EV_KEY.KEY_CAMERA
-]
-
-key_wmi_myasus = [
-    KEY_WMI_MYASUS,
-    EV_KEY.KEY_LEFTSHIFT,
-    EV_KEY.KEY_LEFTMETA,
-    EV_KEY.KEY_T,
-]
-
 keys_wmi = [
-    key_wmi_camera,
-    key_wmi_myasus,
     key_wmi_touchpad
 ]
 ```
 
-How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (**FIRST!** change range of tested ids in script row `5` for example to `60000..60100`, do not worry, read value is after 1s set up back, script changes anything) and during is script running check by eyes whether is LED activated on 1s (is used 1s pause between each dev id)
+How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (but **FIRST!** change range of tested range of ids in script row number `5` for example to `60000..60100`, do not worry, value is tried to set up to 1 hex on 1s (pause between testing each device id) and then is reverted back previously exist value so script changes anything) and during running check by eyes whether is LED activated.
 
 - Discovered keys and associated leds up to this moment that might be equal across models:
  
