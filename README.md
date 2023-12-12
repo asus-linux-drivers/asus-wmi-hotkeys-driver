@@ -18,7 +18,7 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
  
 ## Requirements
 
-- (Optionally) For LEDs without kernel modules yet have mounted `asus-nb-wmi` kernel module via `debugfs` to `/sys/kernel/debug/asus-nb-wmi`
+- (Optionally for LEDs without kernel modules yet) have mounted `debugfs` to `/sys/kernel/debug/asus-nb-wmi` from kernel modules `asus-wmi, asus-nb-wmi`
 
 ## Installation
  
