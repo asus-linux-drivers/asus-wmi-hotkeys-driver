@@ -109,7 +109,7 @@ keys_wmi = [
 ]
 ```
 
-How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (but **FIRST!** change range of tested range of ids in script row number `5` for example to `60000..60100`, do not worry, value is tried to set up to 1 hex on 1s (pause between testing each device id) and then is reverted back previously exist value so script changes anything) and during running check by eyes whether is LED activated.
+How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (but **FIRST!** change range of tested range of ids in script row number `5` for example to `60000..60100`, do not worry, value is tried to set up to 1 hex on 1s (pause between testing each device id) and then is reverted back previously exist value so script changes nothing) and during running check by eyes whether is LED activated.
 
 - Discovered keys and associated leds up to this moment that might be equal across models:
  
