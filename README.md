@@ -135,6 +135,11 @@ KEY_WMI_SWITCHWINDOWS = 0x9C #156
 KEY_WMI_FAN = 0x9D # 157
 ```
 
+*Model: unknown*
+```
+KEY_WMI_CAMERA_LED = 0x00060078 # https://github.com/Plippo/asus-wmi-screenpad/blob/keyboard_camera_led/inc/asus-wmi.h
+```
+
 ## Configuration
  
 For example:
