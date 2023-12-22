@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script try read and write range of devids defined in cycle below via /sys/kernel/debug/asus-nb-wmi/
 

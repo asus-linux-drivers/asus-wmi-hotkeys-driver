@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Checking if the script is runned as root (via sudo or other)
 if [[ $(id -u) != 0 ]]
