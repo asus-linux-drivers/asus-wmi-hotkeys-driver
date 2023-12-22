@@ -15,6 +15,7 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 ## Features
 
 - Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files)
+- Are listened events from device `Asus Keyboard` (e.g. laptop `ROG-Zephyrus-G16-GU603ZI`) or `Asus WMI hotkeys` (e.g. laptop `Zenbook-UP5401EA`) in this priority order
  
 ## Requirements
 
