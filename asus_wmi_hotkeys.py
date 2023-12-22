@@ -117,6 +117,9 @@ while True:
             # If is pressed key any which we are interested in?
             find_custom_key_mapping = list(filter(lambda x: e.value in x, keys_wmi_layouts.keys_wmi))
 
+            if not len(find_custom_key_mapping):
+                continue
+
             if len(find_custom_key_mapping[0]) > 1 and not isEventKey(find_custom_key_mapping[0][1]):
                 try:
                     # Is it path to brightness file created by kernel module?
