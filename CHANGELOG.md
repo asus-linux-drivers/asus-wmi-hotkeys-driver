@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.2 (22.12.2023)
+
+### Feature
+
+- Added support for laptops with device Asus keyboard 
+
+### Fixed
+
+- When was used key not overbound 
+
 ## 1.1.1 (10.12.2023)
 
 ### Fixed
