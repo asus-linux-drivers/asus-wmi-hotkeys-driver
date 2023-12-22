@@ -29,7 +29,9 @@ keys_wmi_layouts = importlib.import_module('keys_wmi_layouts.'+ layout)
 keyboard: Optional[str] = None
 device_id: Optional[str] = None
 
-tries = 5
+MAX_TRIES=5
+FIRST_SEARCH=MAX_TRIES
+tries = MAX_TRIES
 
 # Look into the devices file
 while tries > 0:
@@ -41,7 +43,10 @@ while tries > 0:
         for line in lines:
 
             # Look for the keyboard
-            if keyboard_detected == 0 and ("Name=\"Asus WMI hotkeys" in line):
+            if keyboard_detected == 0 and (
+                    (("Name=\"Asus Keyboard" in line) and tries == FIRST_SEARCH) or (("Name=\"Asus WMI hotkeys" in line) and tries is not FIRST_SEARCH)
+                ):
+
                 keyboard_detected = 1
                 log.debug('Detect keyboard from %s', line.strip())
 
