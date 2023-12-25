@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.3 (25.12.2023)
+
+### Fixed
+
+- Usage #!/usr/bin/env instead of hardcoded path bash/sh 
+
 ## 1.1.2 (22.12.2023)
 
 ### Feature
