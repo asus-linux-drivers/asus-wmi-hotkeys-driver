@@ -178,5 +178,5 @@ $ LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py
 ```
  
 ## Existing similar projects
- 
-Do not know any.
+
+[python service, not configurable, mic-mute LED via kernel module brightness file] https://github.com/Arkapravo-Ghosh/asus-micmute-key-led-driver
