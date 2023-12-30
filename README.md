@@ -1,6 +1,6 @@
 # Asus WMI hotkeys driver
  
-The driver has been created for the situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules yet). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionally toggled LED status and also optionally send another custom key event configured in config file.
+The driver has been created for the situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules yet). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionally toggled LED status or changed for example fan mode and also optionally send another custom key event configured in config file.
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.1.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
@@ -14,7 +14,7 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
-- Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files)
+- Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files) or control files with multiple possible values (via kernel modules files e.g. `throttle_thermal_policy` - `[0,1,2]`)
 - Are listened events from device `Asus Keyboard` (e.g. laptop `ROG-Zephyrus-G16-GU603ZI`) or `Asus WMI hotkeys` (e.g. laptop `Zenbook-UP5401EA`) in this priority order
  
 ## Requirements
@@ -48,6 +48,7 @@ $ libinput debug-events`
 ```
 - Listen for found event number and press the key you want bind to something else for example using `$ sudo evtest /dev/input/event4` (which returns already hex values) or `$ sudo evemu-record /dev/input/event4` (where values has to be converted from decimal to hex):
 ```
+$ sudo apt install evtest
 $ sudo evtest
 ...
 /dev/input/event4:	Asus WMI hotkeys
@@ -136,6 +137,18 @@ KEY_WMI_SWITCHWINDOWS = 0x9C #156
 KEY_WMI_FAN = 0x9D # 157
 ```
 
+*Model: GU603ZI*
+```
+KEY_WMI_FAN = -13565778 # ff3100ae
+
+KEY_WMI_FAN_THROTTLE_THERNAL_POLICY = '/sys/devices/platform/asus-nb-wmi/throttle_thermal_policy'
+KEY_WMI_FAN_THROTTLE_THERNAL_POLICY_VALUES = [
+    0,
+    1,
+    2
+]
+```
+
 *Model: unknown*
 ```
 KEY_WMI_CAMERA_LED = 0x00060078 # https://github.com/Plippo/asus-wmi-screenpad/blob/keyboard_camera_led/inc/asus-wmi.h
@@ -161,6 +174,21 @@ key_wmi_camera = [
     KEY_WMI_CAMERA,
     KEY_WMI_CAMERA_LED
     EV_KEY.SOME_KEY
+]
+# fix only controlling file with multiple values (e.g. fan key with allowed modes 0,1,2)
+KEY_WMI_FAN_THROTTLE_THERNAL_POLICY = '/sys/devices/platform/asus-nb-wmi/throttle_thermal_policy'
+KEY_WMI_FAN_THROTTLE_THERNAL_POLICY_VALUES = [
+    0,
+    1,
+    2
+]
+key_wmi_fan = [
+    EV_KEY.KEY_PROG4,
+    [
+        KEY_WMI_FAN_THROTTLE_THERNAL_POLICY,
+        KEY_WMI_FAN_THROTTLE_THERNAL_POLICY_VALUES
+
+    ]
 ]
 ```
 
