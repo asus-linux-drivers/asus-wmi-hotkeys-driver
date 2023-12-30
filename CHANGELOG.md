@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (30.12.2023)
+
+### Feature
+
+- Added possibility to control files with multiple custom values (e.g. fan modes key)
+
 ## 1.1.3 (25.12.2023)
 
 ### Fixed
