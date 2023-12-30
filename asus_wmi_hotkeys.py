@@ -19,7 +19,7 @@ log = logging.getLogger('Asus WMI additional hotkeys')
 log.setLevel(os.environ.get('LOG', 'INFO'))
 
 # Layout of key mapping
-layout = 'up5401ea'
+layout = 'gu603zi'
 if len(sys.argv) > 1:
     layout = sys.argv[1]
 
@@ -112,31 +112,46 @@ while True:
 
         log.debug(e)
 
-        if e.matches(EV_MSC.MSC_SCAN):
+        if e.matches(EV_MSC.MSC_SCAN) or (e.matches(EV_KEY) and e.value == 1):
 
-            # If is pressed key any which we are interested in?
-            find_custom_key_mapping = list(filter(lambda x: e.value in x, keys_wmi_layouts.keys_wmi))
+            # If is pressed key any which we are interested in (defined by EV_KEY.X or MSC_SCAN)
+            find_custom_key_mapping = list(filter(lambda x: e.value in x or e.code in x, keys_wmi_layouts.keys_wmi))
 
+            # Not found
             if not len(find_custom_key_mapping):
                 continue
 
-            if len(find_custom_key_mapping[0]) > 1 and not isEventKey(find_custom_key_mapping[0][1]):
+            elif len(find_custom_key_mapping[0]) > 1 and not isEventKey(find_custom_key_mapping[0][1]):
                 try:
-                    # Is it path to brightness file created by kernel module?
-                    if isfile(find_custom_key_mapping[0][1]) and access(find_custom_key_mapping[0][1], R_OK):
+                    # Is it path to e.g. brightness file or throttle_thermal_policy created by kernel module?
+                    if (not isinstance(find_custom_key_mapping[0][1], list) and isfile(find_custom_key_mapping[0][1]) and access(find_custom_key_mapping[0][1], R_OK)) or\
+                        (isinstance(find_custom_key_mapping[0][1], list) and isfile(find_custom_key_mapping[0][1][0]) and access(find_custom_key_mapping[0][1][0], R_OK)):
 
-                        cmd = ["cat", find_custom_key_mapping[0][1]]
+                        if isinstance(find_custom_key_mapping[0][1], list):
+                            file_path = find_custom_key_mapping[0][1][0]
+                        else:
+                            file_path = find_custom_key_mapping[0][1]
+
+                        cmd = ["cat", file_path]
                         log.debug(cmd)
                         prop_data = subprocess.check_output(cmd)
 
-                        brightness_value = prop_data.decode().strip()
+                        value = int(prop_data.decode().strip())
 
-                        new_brightness_value = 0
+                        new_value = 0
 
-                        if brightness_value == '0':
-                            new_brightness_value = 1
+                        if len(find_custom_key_mapping[0][1]) > 1:
+                            custom_values = find_custom_key_mapping[0][1][1]
+                            value_index = custom_values.index(value)
+                            if value_index + 1 >= len(custom_values):
+                                new_value = 0
+                            else:
+                                new_value = value + 1
+                        else:
+                            if value == 0:
+                                new_value = 1
 
-                        cmd = "echo " + str(new_brightness_value) + "| sudo tee -a '" + find_custom_key_mapping[0][1] + "' >/dev/null"
+                        cmd = "echo " + str(new_value) + "| sudo tee -a '" + file_path + "' >/dev/null"
                         log.debug(cmd)
 
                         subprocess.call(cmd, shell=True)
