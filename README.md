@@ -14,7 +14,7 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
-- Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files) or control files with multiple possible values (via kernel modules files e.g. `throttle_thermal_policy` - `[0,1,2]`)
+- Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files) or control files with multiple possible `int` values (e.g. kernel modules files `throttle_thermal_policy` - `[0,1,2]`)
 - Are listened events from device `Asus Keyboard` (e.g. laptop `ROG-Zephyrus-G16-GU603ZI`) or `Asus WMI hotkeys` (e.g. laptop `Zenbook-UP5401EA`) in this priority order
  
 ## Requirements
