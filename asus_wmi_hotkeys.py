@@ -19,7 +19,7 @@ log = logging.getLogger('Asus WMI additional hotkeys')
 log.setLevel(os.environ.get('LOG', 'INFO'))
 
 # Layout of key mapping
-layout = 'gu603zi'
+layout = 'up5401ea'
 if len(sys.argv) > 1:
     layout = sys.argv[1]
 
@@ -140,7 +140,7 @@ while True:
 
                         new_value = 0
 
-                        if len(find_custom_key_mapping[0][1]) > 1:
+                        if isinstance(find_custom_key_mapping[0][1], list) > 1:
                             custom_values = find_custom_key_mapping[0][1][1]
                             value_index = custom_values.index(value)
                             if value_index + 1 >= len(custom_values):
