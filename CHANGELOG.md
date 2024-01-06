@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1 (6.1.2024)
+
+### Fixed
+
+- Added possibility to control files with multiple custom values (e.g. fan modes key) (Replaced len with isinstance(.., list) as len have even string)
+
 ## 1.2.0 (30.12.2023)
 
 ### Feature
