@@ -90,7 +90,7 @@ def isEventKey(event):
     else:
         return False
 
-# Create a new device to send right clicks
+# Create a new device to send overbound keys
 
 dev = Device()
 dev.name = "Asus WMI hotkeys"
@@ -105,9 +105,8 @@ udev = dev.create_uinput_device()
 KEY_WMI_LED_ON = 0x00010001
 #KEY_WMI_LED_OFF = 0x00010000
 
-while True:
-
-    # If Asus WMI hotkeys sends something
+# If Asus WMI hotkeys sends something
+try:
     for e in d_t.events():
 
         log.debug(e)
@@ -221,3 +220,8 @@ while True:
                     udev.send_events(sync_event)
                 except OSError as e:
                     log.error("Cannot send event, %s", e)
+
+except:
+    fd_t.close()
+    logging.exception("Listening keyboard events unexpectedly failed")
+    sys.exit(1)
