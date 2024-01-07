@@ -84,8 +84,7 @@ fd_t = open('/dev/input/event' + str(keyboard), 'rb')
 d_t = Device(fd_t)
 
 def isEventKey(event):
-    if getattr(event, "name", None) is not None and\
-            getattr(EV_KEY, event.name):
+    if hasattr(event, "name") and hasattr(EV_KEY, event.name):
         return True
     else:
         return False
