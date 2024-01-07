@@ -10,6 +10,7 @@ import subprocess
 from libevdev import EV_KEY, EV_SYN, EV_MSC, Device, InputEvent
 from os import access, R_OK
 from os.path import isfile
+from time import sleep
 
 # Setup logging
 # LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py  # all messages
@@ -99,7 +100,12 @@ for key in keys_wmi_layouts.keys_wmi:
         if isEventKey(key_to_enable):
             dev.enable(key_to_enable)
 
+# Sleep for a bit so udev, libinput, Xorg, Wayland, ... all have had
+# a chance to see the device and initialize it. Otherwise the event
+# will be sent by the kernel but nothing is ready to listen to the
+# device yet
 udev = dev.create_uinput_device()
+sleep(1)
 
 KEY_WMI_LED_ON = 0x00010001
 #KEY_WMI_LED_OFF = 0x00010000
