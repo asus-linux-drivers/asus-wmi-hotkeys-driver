@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.2 (10.1.2024)
+
+### Fixed
+
+- Fixed driver auto-start using systemd service
+
 ## 1.2.1 (6.1.2024)
 
 ### Fixed
