@@ -115,7 +115,7 @@ How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (but **F
 
 - Discovered keys and associated leds up to this moment that might be equal across models:
  
-*Model: UP5401EA*
+*Model: UP5401EA & UN5401QAB*
 ```
 KEY_WMI_TOUCHPAD = 0x6B # 107
 KEY_WMI_MICMUTE = 0x7C # 124
@@ -124,6 +124,39 @@ KEY_WMI_MYASUS = 0x86 # 134
 
 KEY_WMI_MICMUTE_LED = '/sys/class/leds/platform::micmute/brightness' # or 0x00040017
 KEY_WMI_CAMERA_LED = 0x00060079
+```
+
+```
+# LEDS ids 0x00060079 and 0x00040017 can be found even in DSDT.dsl table
+...
+If ((IIA0 == 0x00060079))
+{
+ If ((IIA1 == One))
+ {
+  SGOV (0x05, Zero)
+ }
+ ElseIf ((IIA1 == Zero))
+ {
+  SGOV (0x05, Ones)
+ }
+
+ Return (One)
+}
+
+If ((IIA0 == 0x00040017))
+{
+ If ((IIA1 == One))
+ {
+  SGOV (0x59, Zero)
+ }
+ Else
+ {
+  SGOV (0x59, Ones)
+ }
+
+ Return (One)
+}
+...
 ```
  
 *Model: UX8402*
