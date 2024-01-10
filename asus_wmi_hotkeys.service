@@ -4,7 +4,6 @@ Description=Asus WMI hotkeys handler
 [Service]
 Type=simple
 ExecStart=/usr/bin/env python3 /usr/share/asus_wmi_hotkeys-driver/asus_wmi_hotkeys.py $LAYOUT
-StandardInput=tty-force
 StandardOutput=append:/var/log/asus_wmi_hotkeys-driver/error.log
 StandardError=append:/var/log/asus_wmi_hotkeys-driver/error.log
 TimeoutSec=5
