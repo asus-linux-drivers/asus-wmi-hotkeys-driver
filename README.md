@@ -127,7 +127,7 @@ KEY_WMI_CAMERA_LED = 0x00060079
 ```
 
 ```
-# LEDS ids 0x00060079 and 0x00040017 can be found even in DSDT.dsl table
+# LEDs 0x00060079 and 0x00040017 can be found in DSDT.dsl table too
 ...
 If ((IIA0 == 0x00060079))
 {
