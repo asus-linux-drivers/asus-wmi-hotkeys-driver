@@ -1,6 +1,6 @@
 # Asus WMI hotkeys driver
 
-The driver works as middle-man and can be especially handy when events are not supported by kernel module / distro code, is listening for events of added devices by default (e.g. `Asus keyboard` and `Asus WMI hotkeys`) or added devices in configuration (e.g. `Lid Switch` and `Asus WMI accel tablet mode)`) and when is appropriate event caught then is handled by custom configuration. For example can be toggled LED status or changed control file (e.g. fan mode), send another key event or executed custom command (e.g. reaction to `switch lid state`). More [here](#Configuration).
+The driver works as middle-man and can be especially handy when events are not supported by kernel module / distro code yet. The driver is listening for events of devices added by default (`Asus keyboard` and `Asus WMI hotkeys`) or re-defined devices in custom configuration (e.g. `Lid Switch` and `Asus WMI accel tablet mode`). When is appropriate event caught then is handled by custom configuration. For example, can be toggled LED status or changed content of the control file (e.g. fan modes), sent another key event, or executed custom command. COnfiguration examples are [here](#Configuration) or predefined layouts [here](keys_wmi_layouts).
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.2.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
@@ -14,7 +14,7 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
-- Driver installed for the current user (does not run under `$ sudo`)
+- Driver is installed for the current user (does not run under `$ sudo`)
 - Allowed to send custom commands (e.g. `xinput enable 19`)
 - Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
 - Allowed to fix any special Fn+ key including associated LED (directly via `debugfs` or kernel modules brightness files) or control files with multiple possible `int` values (e.g. kernel modules files `throttle_thermal_policy` - `[0,1,2]`)
@@ -25,7 +25,7 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Installation
 
-Get latest dev version using `git`
+Get the latest dev version using `git`
 
 ```bash
 $ git clone https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver
@@ -38,9 +38,9 @@ and install
 $ bash install.sh
 ```
 
-or run separately parts of the install script
+or run separate parts of the install script
 
-- run notifier every time when the user log in (do NOT run as `$ sudo`, works via `systemctl --user`)
+- run whenever the user logs in (do NOT run as `$ sudo`, works via `systemctl --user`)
 
 ```bash
 $ bash install_service.sh
@@ -54,7 +54,7 @@ To uninstall run
 $ bash uninstall.sh
 ```
 
-or run separately parts of the uninstall script
+or run separate parts of the uninstall script
 
 ```bash
 $ bash uninstall_service.sh
@@ -62,11 +62,11 @@ $ bash uninstall_service.sh
  
 ## Setup
  
-How to discover the key value and bind to something else using this driver.
+How to discover the key value and bind it to something else using this driver.
  
 - Find the event ID of `Asus WMI hotkeys` for example like this:
 ```
-$ libinput debug-events`
+$ libinput debug-events
 ...
 -event4 DEVICE_ADDED Asus WMI hotkeys seat0 default group9 cap:ksudo evemu-record /dev/input/event4
 ...
@@ -119,7 +119,7 @@ E: 5.003936 0000 0000 0000	# ------------ SYN_REPORT (0) ---------- +2211ms
 E: 5.003972 0001 0094 0000	# EV_KEY / KEY_PROG1            0
 E: 5.003972 0000 0000 0000	# ------------ SYN_REPORT (0) ---------- +0ms
 ```
-- Discovered `EV_MSC / MSC_SCAN` value use in hexa format in config aswell as appropriate key to which you want bind that key, for example:
+- Discovered `EV_MSC / MSC_SCAN` value use in hexa format in config as well as appropriate key to which you want to bind that key, for example:
 
 ```
 from libevdev import EV_KEY
@@ -138,7 +138,7 @@ keys_wmi = [
 
 How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (but **FIRST!** change range of tested range of ids in script row number `5` for example to `60000..60100`, do not worry, value is tried to set up to 1 hex on 1s (pause between testing each device id) and then is reverted back previously exist value so script changes nothing) and during running check by eyes whether is LED activated.
 
-- Discovered keys and associated leds up to this moment that might be equal across models:
+- Discovered keys and associated LEDs up to this moment that might be equal across models:
  
 *Model: UP5401EA & UN5401QAB*
 ```
@@ -150,8 +150,6 @@ KEY_WMI_MYASUS = 0x86 # 134
 KEY_WMI_MICMUTE_LED = '/sys/class/leds/platform::micmute/brightness' # or 0x00040017
 KEY_WMI_CAMERA_LED = 0x00060079
 ```
-
-<<<<<<< Updated upstream
 ```
 # LEDs 0x00060079 and 0x00040017 can be found in DSDT.dsl table too
 ...
@@ -184,9 +182,7 @@ If ((IIA0 == 0x00040017))
 }
 ...
 ```
- 
-=======
->>>>>>> Stashed changes
+
 *Model: UX8402*
 ```
 KEY_WMI_SCREENPAD = 0x6A #106
@@ -261,7 +257,7 @@ key_wmi_tablet_mode_enable_keyboard = [
     InputEvent(EV_SW.SW_TABLET_MODE, 0),
     'xinput enable 19'
 ]
-# fix event for specific device 
+# fix event for the specific device 
 allowed_listen_to_devices = [
     "Asus keyboard",              # listening by default
     "Asus WMI hotkeys",           # listening by default
@@ -270,7 +266,7 @@ allowed_listen_to_devices = [
 ]
 ```
 
-Back-up of configuration is up to you as repository contains only examples for easy getting started. Config is located here:
+Backup configuration is up to you as the repository contains only examples for easy getting started. Config is located here:
  
 ```
 $ cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
@@ -278,7 +274,7 @@ $ cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
  
 ## Troubleshooting
  
-To activate logger, do in a console:
+To activate the logger, do this in a console:
 ```
 $ LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py
 ```
@@ -286,4 +282,7 @@ $ LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py
 ## Existing similar projects
 
 - [python service, not configurable, mic-mute LED via kernel module brightness file] https://github.com/Arkapravo-Ghosh/asus-micmute-key-led-driver
+
+## Existing related projects
+
 - [how to write kernel patch for adding not supported key led by kernel yet] https://github.com/asus-linux-drivers/asus-how-to-kernel-driver
