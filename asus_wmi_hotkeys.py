@@ -46,40 +46,50 @@ device_ids: Optional[list[str]] = []
 
 device_detection_status = 0
 
-with open('/proc/bus/input/devices', 'r') as f:
-    lines = f.readlines()
-    for line in lines:
+# because for example when is udev created by another systemctl service asus_accel_tablet_mode_driver
+attempts = 5
 
-        # Do we want listen this device?
-        if device_detection_status == 0 and list(filter(lambda x: x in line, allowed_listen_to_devices)):
-            device_detection_status = 1
-            log.debug('Detect device from %s', line.strip())
+while attempts:
 
-        if device_detection_status == 1:
-            if "S: " in line:
-                # search device id
-                device_id=re.sub(r".*i2c-(\d+)/.*$", r'\1', line).replace("\n", "")
-                device_ids.append(device_id)
-                log.debug('Set device id %s from %s', device_id, line.strip())
+    device_event_ids = []
+    device_ids = []
+    device_detection_status = 0
 
-            if "H: " in line:
-                device = line.split("event")[1].split(" ")[0]
-                device_event_ids.append(device)
-                log.debug('Set device id %s from %s', device, line.strip())
-                device_detection_status = 0
+    with open('/proc/bus/input/devices', 'r') as f:
+        lines = f.readlines()
+        for line in lines:
 
-        # Stop looking if keyboard have been found
-        if device_detection_status == 2:
-            break
+            # Do we want listen this device?
+            if device_detection_status == 0 and list(filter(lambda x: x in line, allowed_listen_to_devices)):
+                device_detection_status = 1
+                log.debug('Detect device from %s', line.strip())
 
-    # Was defined and found atleast one device
-    if len(device_event_ids) > 0:
-        device_detection_status = 2
+            if device_detection_status == 1:
+                if "S: " in line:
+                    # search device id
+                    device_id=re.sub(r".*i2c-(\d+)/.*$", r'\1', line).replace("\n", "")
+                    device_ids.append(device_id)
+                    log.debug('Set device id %s from %s', device_id, line.strip())
 
-    # device was not detected?
-    if device_detection_status != 2:
-        log.error("Can't find any device (code: %s)", device_detection_status)
-        sys.exit(1)
+                if "H: " in line:
+                    device = line.split("event")[1].split(" ")[0]
+                    device_event_ids.append(device)
+                    log.debug('Set device id %s from %s', device, line.strip())
+                    device_detection_status = 0
+
+            # Stop looking if all devices have been found already
+            if len(allowed_listen_to_devices) == len(device_event_ids):
+                device_detection_status = 2
+                break
+
+        sleep(0.2)
+
+        attempts-=1
+
+
+if not len(device_event_ids) > 0:
+    log.error("Can't find any device (code: %s)", device_detection_status)
+    sys.exit(1)
 
 
 # Start monitoring the devices

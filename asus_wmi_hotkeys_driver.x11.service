@@ -6,7 +6,7 @@ Type=simple
 ExecStart=/usr/bin/env python3 /usr/share/asus-wmi-hotkeys-driver/asus_wmi_hotkeys.py layout
 StandardOutput=append:$ERROR_LOG_FILE_PATH
 StandardError=append:$ERROR_LOG_FILE_PATH
-TimeoutSec=5
+TimeoutSec=30
 Restart=on-failure
 Environment="DISPLAY=$DISPLAY"
 Environment="XAUTHORITY=$XAUTHORITY"
