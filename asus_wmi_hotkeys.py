@@ -11,7 +11,6 @@ from libevdev import EV_KEY, EV_SYN, Device, InputEvent
 from os import access, R_OK
 from os.path import isfile
 from time import sleep
-import string
 import signal
 import multiprocessing
 
