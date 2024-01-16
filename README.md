@@ -15,6 +15,7 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 ## Features
 
 - Driver is installed for the current user (does not run under `$ sudo`)
+- Allowed listen to events not only from devices `Asus keyboard` or `Asus WMI hotkeys`
 - Allowed to send custom commands (e.g. `xinput enable 19`)
 - Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
 - Allowed to fix any special Fn+ key including associated LED (directly via `debugfs` or kernel modules brightness files) or control files with multiple possible `int` values (e.g. kernel modules files `throttle_thermal_policy` - `[0,1,2]`)
