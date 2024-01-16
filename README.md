@@ -1,6 +1,6 @@
 # Asus WMI hotkeys driver
 
-The driver works as middle-man and can be especially handy when events are not supported by kernel module / distro code, is listening for events and when is appropriate event caught then is handled by custom configuration. For example can be toggled LED status or changed control file (e.g. fan mode), send another key event or executed custom command (e.g. lid state switch). More [here](#Configuration).
+The driver works as middle-man and can be especially handy when events are not supported by kernel module / distro code, is listening for events of added devices by default (e.g. `Asus keyboard` and `Asus WMI hotkeys`) or added devices in configuration (e.g. `Lid Switch` and `Asus WMI accel tablet mode)`) and when is appropriate event caught then is handled by custom configuration. For example can be toggled LED status or changed control file (e.g. fan mode), send another key event or executed custom command (e.g. reaction to `switch lid state`). More [here](#Configuration).
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.2.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
@@ -14,8 +14,8 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
-- Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
 - Allowed to send custom commands (e.g. `xinput enable 19`)
+- Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
 - Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files) or control files with multiple possible `int` values (e.g. kernel modules files `throttle_thermal_policy` - `[0,1,2]`)
 - Are listened events from device `Asus Keyboard` (e.g. laptop `ROG-Zephyrus-G16-GU603ZI`) or `Asus WMI hotkeys` (e.g. laptop `Zenbook-UP5401EA`) in this priority order
 
@@ -201,6 +201,13 @@ key_wmi_tablet_mode_disable_keyboard = [
 key_wmi_tablet_mode_enable_keyboard = [
     InputEvent(EV_SW.SW_TABLET_MODE, 0),
     'xinput enable 19'
+]
+# fix event for specific device 
+allowed_listen_to_devices = [
+    "Asus keyboard",              # listening by default
+    "Asus WMI hotkeys",           # listening by default
+    "Lid Switch",                 # NOT listening by default
+    "Asus WMI accel tablet mode", # NOT listening by default
 ]
 ```
 
