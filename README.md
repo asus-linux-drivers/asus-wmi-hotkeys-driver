@@ -1,6 +1,6 @@
 # Asus WMI hotkeys driver
- 
-The driver has been created for the situation when special keys (even associated LEDS) on laptop do not work (are not supported by kernel modules yet; how create a kernel patch is described step by step [here](https://github.com/asus-linux-drivers/asus-how-to-kernel-driver)). The driver works as middle-man, is listening for events and when is appropriate key event caught then is optionally toggled LED status or changed for example fan mode and also optionally send another custom key event configured in config file.
+
+The driver works as middle-man and can be especially handy when events are not supported by kernel module / distro code, is listening for events and when is appropriate event caught then is handled by custom configuration. For example can be toggled LED status or changed control file (e.g. fan mode), send another key event or executed custom command (e.g. lid state switch). More [here](#Configuration).
 
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.2.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
@@ -14,9 +14,11 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
+- Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
+- Allowed to send custom commands (e.g. `xinput enable 19`)
 - Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files) or control files with multiple possible `int` values (e.g. kernel modules files `throttle_thermal_policy` - `[0,1,2]`)
 - Are listened events from device `Asus Keyboard` (e.g. laptop `ROG-Zephyrus-G16-GU603ZI`) or `Asus WMI hotkeys` (e.g. laptop `Zenbook-UP5401EA`) in this priority order
- 
+
 ## Requirements
 
 - (Optionally for LEDs without kernel modules yet) have mounted `debugfs` to `/sys/kernel/debug/asus-nb-wmi` from kernel modules `asus-wmi, asus-nb-wmi`
@@ -125,13 +127,13 @@ KEY_WMI_MYASUS = 0x86 # 134
 KEY_WMI_MICMUTE_LED = '/sys/class/leds/platform::micmute/brightness' # or 0x00040017
 KEY_WMI_CAMERA_LED = 0x00060079
 ```
- 
+
 *Model: UX8402*
 ```
 KEY_WMI_SCREENPAD = 0x6A #106
 KEY_WMI_SWITCHWINDOWS = 0x9C #156
 ```
- 
+
 *Model: UX582X*
 ```
 KEY_WMI_FAN = 0x9D # 157
@@ -189,6 +191,16 @@ key_wmi_fan = [
         KEY_WMI_FAN_THROTTLE_THERNAL_POLICY_VALUES
 
     ]
+]
+# fix by custom command (disable keyboard, touchpad, ..)
+key_wmi_tablet_mode_disable_keyboard = [
+    InputEvent(EV_SW.SW_TABLET_MODE, 1),
+    'xinput disable 19'
+]
+
+key_wmi_tablet_mode_enable_keyboard = [
+    InputEvent(EV_SW.SW_TABLET_MODE, 0),
+    'xinput enable 19'
 ]
 ```
 
