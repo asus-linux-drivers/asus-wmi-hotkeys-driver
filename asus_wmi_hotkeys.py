@@ -204,8 +204,8 @@ def handle_events(device, udev):
 
                             subprocess.call(cmd, shell=True)
 
-                        # Otherwise try use as device id (hex value) for asus-nb-wmi module
-                        elif all(c in string.hexdigits for c in find_custom_key_mapping[0][1]):
+                        # Otherwise try use as device id (hex value translated to integer) for asus-nb-wmi module
+                        elif isinstance(find_custom_key_mapping[0][1], int):
 
                             # Access to specific device led id
                             dev_id = hex(find_custom_key_mapping[0][1])
@@ -268,7 +268,7 @@ def handle_events(device, udev):
                     cmds = []
                     for cmd in find_custom_key_mapping[0][1:]:
 
-                        if not isEventKey(cmd) and not isInputEvent(cmd):
+                        if not isfile(str(cmd)) and access(str(cmd), R_OK) and not isEventKey(str(cmd)) and not isInputEvent(str(cmd)):
                             cmds.append(cmd)
 
                     sync_event = [
@@ -281,7 +281,8 @@ def handle_events(device, udev):
                         udev.send_events(keys_to_send_release_events)
                         udev.send_events(sync_event)
 
-                        execute_cmd(keys_to_send_press)
+                        for cmd in cmds:
+                            execute_cmd(cmd)
                     except OSError as e:
                         log.error("Cannot send event, %s", e)
 
