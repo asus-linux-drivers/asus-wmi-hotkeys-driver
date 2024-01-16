@@ -8,10 +8,10 @@ StandardOutput=append:/var/log/asus_wmi_hotkeys-driver/error.log
 StandardError=append:/var/log/asus_wmi_hotkeys-driver/error.log
 TimeoutSec=5
 Restart=on-failure
-Environment="DISPLAY=:0"
-Environment="XAUTHORITY=/home/ldrahnik/.Xauthority"
-Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
-Environment="XDG_RUNTIME_DIR=/run/user/1000"
+Environment="DISPLAY=$DISPLAY"
+Environment="XAUTHORITY=$XAUTHORITY"
+Environment="DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS"
+Environment="XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR"
 
 [Install]
 WantedBy=default.target

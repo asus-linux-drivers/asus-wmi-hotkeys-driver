@@ -29,6 +29,10 @@ if len(sys.argv) > 1:
 
 keys_wmi_layouts = importlib.import_module('keys_wmi_layouts.'+ layout)
 
+# Default listen to these devices:
+#
+# - Device `Asus Keyboard` (e.g. laptop `ROG-Zephyrus-G16-GU603ZI`)
+# - Device `Asus WMI hotkeys` (e.g. laptop `Zenbook-UP5401EA`)
 allowed_listen_to_devices = getattr(keys_wmi_layouts, "allowed_listen_to_devices", [
     "Asus keyboard",
     "Asus WMI hotkeys"

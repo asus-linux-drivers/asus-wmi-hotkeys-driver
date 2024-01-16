@@ -14,27 +14,50 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
+- Driver installed for the current user (does not run under `$ sudo`)
 - Allowed to send custom commands (e.g. `xinput enable 19`)
 - Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
-- Allowed to fix any special Fn+ key including associated LED (via debugfs or kernel modules brightness files) or control files with multiple possible `int` values (e.g. kernel modules files `throttle_thermal_policy` - `[0,1,2]`)
-- Are listened events from device `Asus Keyboard` (e.g. laptop `ROG-Zephyrus-G16-GU603ZI`) or `Asus WMI hotkeys` (e.g. laptop `Zenbook-UP5401EA`) in this priority order
+- Allowed to fix any special Fn+ key including associated LED (directly via `debugfs` or kernel modules brightness files) or control files with multiple possible `int` values (e.g. kernel modules files `throttle_thermal_policy` - `[0,1,2]`)
 
 ## Requirements
 
 - (Optionally for LEDs without kernel modules yet) have mounted `debugfs` to `/sys/kernel/debug/asus-nb-wmi` from kernel modules `asus-wmi, asus-nb-wmi`
 
 ## Installation
- 
-You can get the latest ASUS WMI hotkeys driver for Linux from Git and install it using the following commands.
+
+Get latest dev version using `git`
+
+```bash
+$ git clone https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver
+$ cd asus-wmi-hotkeys-driver
 ```
-$ git clone https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver.git
-$ cd asus-wmi-hotkeys
-$ sudo bash ./install.sh
+
+and install
+
+```bash
+$ bash install.sh
 ```
- 
-To uninstall, just run:
+
+or run separately parts of the install script
+
+- run notifier every time when the user log in (do NOT run as `$ sudo`, works via `systemctl --user`)
+
+```bash
+$ bash install_service.sh
 ```
-$ sudo bash ./uninstall.sh
+
+## Uninstallation
+
+To uninstall run
+
+```bash
+$ bash uninstall.sh
+```
+
+or run separately parts of the uninstall script
+
+```bash
+$ bash uninstall_service.sh
 ```
  
 ## Setup

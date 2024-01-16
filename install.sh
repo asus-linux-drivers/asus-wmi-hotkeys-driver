@@ -1,119 +1,113 @@
 #!/usr/bin/env bash
 
-# Checking if the script is runned as root (via sudo or other)
-if [[ $(id -u) != 0 ]]
-then
-	echo "Please run the installation script as root (using sudo for example)"
-	exit 1
-fi
+source non_sudo_check.sh
 
-if [[ $(apt install 2>/dev/null) ]]; then
-    echo 'apt is here' && sudo apt -y install libevdev2 python3-libevdev
-elif [[ $(pacman -h 2>/dev/null) ]]; then
-    echo 'pacman is here' && sudo pacman --noconfirm -S libevdev python-libevdev
-elif [[ $(dnf help 2>/dev/null) ]]; then
-    echo 'dnf is here' && sudo dnf -y install libevdev python-libevdev
-fi
+LOGS_DIR_PATH="/var/log/asus-wmi-hotkeys-driver"
 
-if [[ -d keys_wmi_layouts/__pycache__ ]] ; then
-    rm -rf keys_wmi_layouts/__pycache__
-fi
-
-# selected layout will be installed under this filename
-keys_wmi_layout_filename="layout.py"
-keys_wmi_layout_installed_file="/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/$keys_wmi_layout_filename"
+source install_logs.sh
 
 echo
-echo "Select layout from users example key WMI layouts (selected layout can be futher modified for your own needs):"
-PS3='Please enter your choice '
-options=($(ls -I $keys_wmi_layout_filename keys_wmi_layouts) "Quit")
-select selected_opt in "${options[@]}"
-do
-    if [ "$selected_opt" = "Quit" ]
-    then
-        exit 0
-    fi
 
-    for option in $(ls keys_wmi_layouts);
-    do
-        if [ "$option" = "$selected_opt" ] ; then
-            selected_keys_wmi_layout_filename=$selected_opt
-            break
-        fi
-    done
+# log output from every installing attempt aswell
+LOGS_INSTALL_LOG_FILE_NAME=install-"$(date +"%d-%m-%Y-%H-%M-%S")".log
+LOGS_INSTALL_LOG_FILE_PATH="$LOGS_DIR_PATH/$LOGS_INSTALL_LOG_FILE_NAME"
 
-    if [ -z "$selected_keys_wmi_layout_filename" ] ; then
-        echo "Invalid option $REPLY"
+{
+    if [[ $(sudo apt-get install 2>/dev/null) ]]; then
+        sudo apt-get -y install libevdev2 python3-dev python3-libevdev
+    elif [[ $(sudo pacman -h 2>/dev/null) ]]; then
+        # arch does not have header packages (python3-dev), headers are shipped with base? python package should contains almost latest version python3.*
+        sudo pacman --noconfirm --needed -S libevdev python python-libevdev
+    elif [[ $(sudo dnf help 2>/dev/null) ]]; then
+        sudo dnf -y install libevdev python3-devel python3-libevdev
+    elif [[ $(sudo yum help 2>/dev/null) ]]; then
+        # yum was replaced with newer dnf above
+        sudo yum --y install libevdev python3-devel python3-libevdev
+    elif [[ $(sudo zypper help 2>/dev/null) ]]; then
+        sudo zypper --non-interactive install libevdev2 python3-devel python3-libevdev
     else
-        break
+        echo "Not detected package manager. Driver may not work properly because required packages have not been installed. Please create an issue (https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver/issues)."
     fi
-done
 
-echo "Add asus WMI hotkeys service in /etc/systemd/system/"
-echo "Selected layout $selected_keys_wmi_layout_filename"
-echo "Selected key WMI layout can be futher modified here:"
-echo $keys_wmi_layout_installed_file
+    echo
 
-cat asus_wmi_hotkeys.service | LAYOUT=${keys_wmi_layout_filename::-3} envsubst '$LAYOUT' > /etc/systemd/system/asus_wmi_hotkeys.service
+    # do not install __pycache__
+    if [[ -d keys_wmi_layouts/__pycache__ ]]; then
+        sudo rm -rf keys_wmi_layouts/__pycache__
+    fi
 
-mkdir -p /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts
-mkdir -p /var/log/asus_wmi_hotkeys-driver
-install asus_wmi_hotkeys.py /usr/share/asus_wmi_hotkeys-driver/
-cp keys_wmi_layouts/$selected_keys_wmi_layout_filename keys_wmi_layouts/$keys_wmi_layout_filename
+    source install_layout_select.sh
 
-LAYOUT_DIFF=""
-if test -f "$keys_wmi_layout_installed_file"; then
-    LAYOUT_DIFF=$(diff <(grep -v '^#' keys_wmi_layouts/$keys_wmi_layout_filename) <(grep -v '^#' $keys_wmi_layout_installed_file))
-fi
+    echo
 
-if [ "$LAYOUT_DIFF" != "" ]
-then
-    read -r -p "Was found layout from previous installation which differs compared to the selected one at this moment. Do you want anyway replace found layout with selected one at this moment? [y/N]" response
+    INSTALL_DIR_PATH="/usr/share/asus-wmi-hotkeys-driver"
+
+    # selected layout will be installed under this filename
+    LAYOUT_INSTALLED_FILE_NAME="layout.py"
+    LAYOUT_INSTALLED_FILE="$INSTALL_DIR_PATH/keys_wmi_layouts/$LAYOUT_INSTALLED_FILE_NAME"
+
+    LAYOUT_DIFF=""
+    if test -f "$LAYOUT_INSTALLED_FILE"; then
+        LAYOUT_DIFF=$(diff <(grep -v '^#' keys_wmi_layouts/$LAYOUT_NAME.py) <(grep -v '^#' $LAYOUT_INSTALLED_FILE))
+    fi
+
+    if [ "$LAYOUT_DIFF" != "" ]
+    then
+        read -r -p "Was found layout from previous installation which differs compared to the selected one at this moment. Do you want replace already installed layout with selected one? [y/N]" response
+        case "$response" in [yY][eE][sS]|[yY])
+            sudo cp keys_wmi_layouts/$LAYOUT_NAME.py keys_wmi_layouts/$LAYOUT_INSTALLED_FILE_NAME
+            sudo install -t $INSTALL_DIR_PATH/keys_wmi_layouts/ keys_wmi_layouts/$LAYOUT_INSTALLED_FILE_NAME
+            ;;
+        *)
+            LAYOUT="$INSTALL_DIR_PATH/keys_wmi_layouts/layout.py"
+            echo "Is used layout from previous installation with content:"
+            echo "\`"
+            cat $LAYOUT
+            echo
+            echo "\`"
+            echo
+            echo "For futher modifications is located here:"
+            echo $LAYOUT
+            ;;
+        esac
+    else
+        sudo cp keys_wmi_layouts/$LAYOUT_NAME.py keys_wmi_layouts/$LAYOUT_INSTALLED_FILE_NAME
+        sudo install -t $INSTALL_DIR_PATH/keys_wmi_layouts/ keys_wmi_layouts/$LAYOUT_INSTALLED_FILE_NAME
+    fi
+
+    echo
+
+    echo "Selected layout can be futher modified here: $LAYOUT_INSTALLED_FILE"
+
+    echo
+
+    sudo mkdir -p "$INSTALL_DIR_PATH/keys_wmi_layouts"
+    sudo chown -R $USER "$INSTALL_DIR_PATH"
+    sudo install asus_wmi_hotkeys.py "$INSTALL_DIR_PATH"
+
+    echo
+
+    source install_user_groups.sh
+
+    echo
+
+    source install_service.sh
+
+    echo
+
+    echo "Installation finished succesfully"
+
+    echo
+
+    read -r -p "Reboot is required. Do you want reboot now? [y/N]" response
     case "$response" in [yY][eE][sS]|[yY])
-		install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$keys_wmi_layout_filename
+        reboot
         ;;
     *)
-        LAYOUT="/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
-        echo "Is used layout from previous installation with content:"
-        echo "\`"
-        cat $LAYOUT
-        echo
-        echo "\`"
-        echo
-        echo "For futher modifications is located here:"
-        echo $LAYOUT
         ;;
     esac
-else
-    install -t /usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/ keys_wmi_layouts/$keys_wmi_layout_filename
-fi
 
-systemctl daemon-reload
+    echo
 
-if [[ $? != 0 ]]; then
-    echo "Something went wrong when was called systemctl daemon reload"
-    exit 1
-else
-    echo "Systemctl daemon realod called succesfully"
-fi
-
-systemctl enable asus_wmi_hotkeys.service
-
-if [[ $? != 0 ]]
-then
-	echo "Something gone wrong while enabling asus_wmi_hotkeys.service"
-	exit 1
-else
-	echo "Asus WMI hotkeys service enabled"
-fi
-
-systemctl restart asus_wmi_hotkeys.service
-if [[ $? != 0 ]]
-then
-	echo "Something gone wrong while enabling asus_wmi_hotkeys.service"
-	exit 1
-else
-	echo "Asus WMI hotkeys service started"
-fi
-
-exit 0
+    exit 0
+} 2>&1 | sudo tee "$LOGS_INSTALL_LOG_FILE_PATH"

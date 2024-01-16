@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.0 (16.1.2024)
+
+### Feature 
+
+- The driver run under current user only
+- Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
+- Allowed to define `InputEvent` as event to which the driver reacts or as the driver reacts (e.g. used for `switch lid state` or `switch tablet-mode state`)
+- Allowed to send custom commands (e.g. `xinput enable 19`)
+- Zypper package manager support
+
 ## 1.2.2 (10.1.2024)
 
 ### Fixed
