@@ -5,7 +5,7 @@ The driver works as middle-man and can be especially handy when events are not s
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.3.0.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fasus-linux-drivers%2Fasus-wmi-hotkeys-driver&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
- 
+
 If you find the project useful, do not forget to give project a [![GitHub stars](https://img.shields.io/github/stars/asus-linux-drivers/asus-wmi-hotkeys-driver.svg?style=flat-square)](https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver/stargazers) People already did!
 
 ## Changelog
@@ -23,6 +23,12 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 ## Requirements
 
 - (Optionally for LEDs without kernel modules yet) have mounted `debugfs` to `/sys/kernel/debug/asus-nb-wmi` from kernel modules `asus-wmi, asus-nb-wmi`
+- (Optionally for LEDs with kernel module support) have granted permissions for the current user:
+
+```
+$ sudo chown :$USER /sys/class/leds/platform::micmute/brightness
+$ sudo chmod ug+rw /sys/class/leds/platform::micmute/brightness
+```
 
 ## Installation
 
@@ -60,11 +66,11 @@ or run separate parts of the uninstall script
 ```bash
 $ bash uninstall_service.sh
 ```
- 
+
 ## Setup
- 
+
 How to discover the key value and bind it to something else using this driver.
- 
+
 - Find the event ID of `Asus WMI hotkeys` for example like this:
 ```
 $ libinput debug-events
@@ -140,7 +146,7 @@ keys_wmi = [
 How to discover new LED value? Run file `sudo bash tests/test_devid.sh` (but **FIRST!** change range of tested range of ids in script row number `5` for example to `60000..60100`, do not worry, value is tried to set up to 1 hex on 1s (pause between testing each device id) and then is reverted back previously exist value so script changes nothing) and during running check by eyes whether is LED activated.
 
 - Discovered keys and associated LEDs up to this moment that might be equal across models:
- 
+
 *Model: UP5401EA & UN5401QAB*
 ```
 KEY_WMI_TOUCHPAD = 0x6B # 107
@@ -213,7 +219,7 @@ KEY_WMI_CAMERA_LED = 0x00060078 # https://github.com/Plippo/asus-wmi-screenpad/b
 ```
 
 ## Configuration
- 
+
 For example:
 
 ```
@@ -258,7 +264,7 @@ key_wmi_tablet_mode_enable_keyboard = [
     InputEvent(EV_SW.SW_TABLET_MODE, 0),
     'xinput enable 19'
 ]
-# fix event for the specific device 
+# fix event for the specific device
 allowed_listen_to_devices = [
     "Asus keyboard",              # listening by default
     "Asus WMI hotkeys",           # listening by default
@@ -268,18 +274,18 @@ allowed_listen_to_devices = [
 ```
 
 Backup configuration is up to you as the repository contains only examples for easy getting started. Config is located here:
- 
+
 ```
 $ cat "/usr/share/asus_wmi_hotkeys-driver/keys_wmi_layouts/layout.py"
 ```
- 
+
 ## Troubleshooting
- 
+
 To activate the logger, do this in a console:
 ```
 $ LOG=DEBUG sudo -E ./asus_wmi_hotkeys.py
 ```
- 
+
 ## Existing similar projects
 
 - [python service, not configurable, mic-mute LED via kernel module brightness file] https://github.com/Arkapravo-Ghosh/asus-micmute-key-led-driver
