@@ -198,7 +198,7 @@ def handle_events(device, udev):
                                 if value == 0:
                                     new_value = 1
 
-                            cmd = "echo " + str(new_value) + "| tee -a '" + file_path + "' >/dev/null"
+                            cmd = "echo " + str(new_value) + "| sudo tee -a '" + file_path + "' >/dev/null"
                             log.debug(cmd)
 
                             subprocess.call(cmd, shell=True)
@@ -209,7 +209,7 @@ def handle_events(device, udev):
                             # Access to specific device led id
                             dev_id = hex(find_custom_key_mapping[0][1])
 
-                            cmd = "echo " + str(dev_id) + "| tee '/sys/kernel/debug/asus-nb-wmi/dev_id' >/dev/null"
+                            cmd = "echo " + str(dev_id) + "| sudo tee '/sys/kernel/debug/asus-nb-wmi/dev_id' >/dev/null"
                             log.debug(cmd)
 
                             subprocess.call(cmd, shell=True)
@@ -229,7 +229,7 @@ def handle_events(device, udev):
                             if led_state_hex == led_state_on_hex:
                                 new_led_state = hex(0)
 
-                            cmd = "echo " + str(new_led_state) + " | tee '/sys/kernel/debug/asus-nb-wmi/ctrl_param' >/dev/null"
+                            cmd = "echo " + str(new_led_state) + " | sudo tee '/sys/kernel/debug/asus-nb-wmi/ctrl_param' >/dev/null"
                             log.debug(cmd)
 
                             subprocess.call(cmd, shell=True)

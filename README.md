@@ -14,7 +14,6 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 
 ## Features
 
-- Driver is installed for the current user (does not run under `$ sudo`)
 - Allowed listen to events not only from devices `Asus keyboard` or `Asus WMI hotkeys`
 - Allowed to send custom commands (e.g. `xinput enable 19`)
 - Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
@@ -23,12 +22,6 @@ If you find the project useful, do not forget to give project a [![GitHub stars]
 ## Requirements
 
 - (Optionally for LEDs without kernel modules yet) have mounted `debugfs` to `/sys/kernel/debug/asus-nb-wmi` from kernel modules `asus-wmi, asus-nb-wmi`
-- (Optionally for LEDs with kernel module support) have granted permissions for the current user:
-
-```
-$ sudo chown :$USER /sys/class/leds/platform::micmute/brightness
-$ sudo chmod ug+rw /sys/class/leds/platform::micmute/brightness
-```
 
 ## Installation
 
