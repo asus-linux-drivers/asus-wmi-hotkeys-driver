@@ -19,8 +19,8 @@ case "$RESPONSE" in [yY][eE][sS]|[yY])
     SERVICE_BASE_NAME=asus_wmi_hotkeys_driver
     SERVICE_FILE_PATH=$SERVICE_BASE_NAME.service
     SERVICE_X11_FILE_PATH=$SERVICE_BASE_NAME.x11.service
-    SERVICE_INSTALL_FILE_NAME="asus_wmi_hotkeys_driver@.service"
-    SERVICE_INSTALL_DIR_PATH="/usr/lib/systemd/user"
+    SERVICE_INSTALL_FILE_NAME="asus_wmi_hotkeys_driver.service"
+    SERVICE_INSTALL_DIR_PATH="/lib/systemd/system"
 
     XDG_RUNTIME_DIR=$(echo $XDG_RUNTIME_DIR)
     DBUS_SESSION_BUS_ADDRESS=$(echo $DBUS_SESSION_BUS_ADDRESS)
@@ -50,7 +50,7 @@ case "$RESPONSE" in [yY][eE][sS]|[yY])
         cat "$SERVICE_FILE_PATH" | CONFIG_FILE_DIR_PATH="$CONFIG_FILE_DIR_PATH/" DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS ERROR_LOG_FILE_PATH=$ERROR_LOG_FILE_PATH envsubst '$CONFIG_FILE_DIR_PATH $DISPLAY $XAUTHORITY $XDG_RUNTIME_DIR $DBUS_SESSION_BUS_ADDRESS $ERROR_LOG_FILE_PATH' | sudo tee "$SERVICE_INSTALL_DIR_PATH/$SERVICE_INSTALL_FILE_NAME" >/dev/null
     fi
 
-    systemctl --user daemon-reload
+    sudo systemctl daemon-reload
 
     if [[ $? != 0 ]]; then
         echo "Something went wrong when was called systemctl daemon reload"
@@ -59,7 +59,7 @@ case "$RESPONSE" in [yY][eE][sS]|[yY])
         echo "Systemctl daemon reloaded"
     fi
 
-    systemctl enable --user $SERVICE_BASE_NAME@$USER.service
+    sudo systemctl enable $SERVICE_BASE_NAME.service
 
     if [[ $? != 0 ]]; then
         echo "Something went wrong when enabling the $SERVICE_BASE_NAME"
@@ -68,7 +68,7 @@ case "$RESPONSE" in [yY][eE][sS]|[yY])
         echo "Service $SERVICE_BASE_NAME enabled"
     fi
 
-    systemctl restart --user $SERVICE_BASE_NAME@$USER.service
+    sudo systemctl restart $SERVICE_BASE_NAME.service
     if [[ $? != 0 ]]; then
         echo "Something went wrong when starting the $SERVICE_BASE_NAME"
         exit 1
