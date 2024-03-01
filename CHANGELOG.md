@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1 (29.2.2024)
+
+### Fixed
+
+- The driver run under root again
+
 ## 1.3.0 (16.1.2024)
 
 ### Feature 
