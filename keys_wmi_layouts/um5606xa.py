@@ -20,4 +20,4 @@ key_wmi_camera = [
 keys_wmi = [
     key_wmi_camera,
     key_wmi_micmute
-    ]
+]
