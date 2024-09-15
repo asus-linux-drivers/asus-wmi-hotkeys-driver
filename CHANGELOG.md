@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2 (15.9.2024)
+
+### Fixed
+
+- Added template for `um5606xa` (camera led address is `0x00060078` and until today was mentioned in templates only adress +1 `0x00060079`, credits @felix-clabs)
+
 ## 1.3.1 (29.2.2024)
 
 ### Fixed
@@ -8,7 +14,7 @@
 
 ## 1.3.0 (16.1.2024)
 
-### Feature 
+### Feature
 
 - The driver run under current user only
 - Allowed to fix any stateful binary switches (e.g. `switch lid state`, `switch tablet-mode state`)
@@ -39,17 +45,17 @@
 
 ### Fixed
 
-- Usage #!/usr/bin/env instead of hardcoded path bash/sh 
+- Usage #!/usr/bin/env instead of hardcoded path bash/sh
 
 ## 1.1.2 (22.12.2023)
 
 ### Feature
 
-- Added support for laptops with device Asus keyboard 
+- Added support for laptops with device Asus keyboard
 
 ### Fixed
 
-- When was used key not overbound 
+- When was used key not overbound
 
 ## 1.1.1 (10.12.2023)
 
