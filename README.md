@@ -96,6 +96,7 @@ Event: time 1695811059.000888, -------------- SYN_REPORT ------------
 Event: time 1695811059.000898, type 1 (EV_KEY), code 191 (KEY_F21), value 0
 Event: time 1695811059.000898, -------------- SYN_REPORT ------------
 
+$ sudo apt-get install evemu-tools
 $ sudo evemu-record /dev/input/event4
 ...
 E: 0.000001 0004 0004 0107	# EV_MSC / MSC_SCAN             107
