@@ -170,6 +170,7 @@ def handle_events(device, udev):
                 #         - hex value of device id '/sys/kernel/debug/asus-nb-wmi/dev_id' (e.g. 0x00060079)
                 if len(find_custom_key_mapping[0]) > 1 and not isEventKey(find_custom_key_mapping[0][1]) and not isInputEvent(find_custom_key_mapping[0][1]):
                     try:
+
                         # Is it path to e.g. brightness file or throttle_thermal_policy created by kernel module?
                         if (not isinstance(find_custom_key_mapping[0][1], list) and isfile(find_custom_key_mapping[0][1]) and access(find_custom_key_mapping[0][1], R_OK)) or\
                             (isinstance(find_custom_key_mapping[0][1], list) and isfile(find_custom_key_mapping[0][1][0]) and access(find_custom_key_mapping[0][1][0], R_OK)):
