@@ -13,17 +13,17 @@ LOGS_INSTALL_LOG_FILE_NAME=install-"$(date +"%d-%m-%Y-%H-%M-%S")".log
 LOGS_INSTALL_LOG_FILE_PATH="$LOGS_DIR_PATH/$LOGS_INSTALL_LOG_FILE_NAME"
 
 {
-    if [[ $(sudo apt-get install 2>/dev/null) ]]; then
+    if [[ $(command -v apt-get 2>/dev/null) ]]; then
         sudo apt-get -y install libevdev2 python3-dev python3-libevdev
-    elif [[ $(sudo pacman -h 2>/dev/null) ]]; then
+    elif [[ $(command -v pacman 2>/dev/null) ]]; then
         # arch does not have header packages (python3-dev), headers are shipped with base? python package should contains almost latest version python3.*
         sudo pacman --noconfirm --needed -S libevdev python python-libevdev
-    elif [[ $(sudo dnf help 2>/dev/null) ]]; then
+    elif [[ $(command -v dnf 2>/dev/null) ]]; then
         sudo dnf -y install libevdev python3-devel python3-libevdev
-    elif [[ $(sudo yum help 2>/dev/null) ]]; then
+    elif [[ $(command -v yum 2>/dev/null) ]]; then
         # yum was replaced with newer dnf above
         sudo yum --y install libevdev python3-devel python3-libevdev
-    elif [[ $(sudo zypper help 2>/dev/null) ]]; then
+    elif [[ $(command -v zypper 2>/dev/null) ]]; then
         sudo zypper --non-interactive install libevdev2 python3-devel python3-libevdev
     else
         echo "Not detected package manager. Driver may not work properly because required packages have not been installed. Please create an issue (https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver/issues)."
