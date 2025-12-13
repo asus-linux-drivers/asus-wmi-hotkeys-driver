@@ -1,13 +1,14 @@
 # Asus WMI hotkeys driver
 
-The driver works as middle-man and can be especially handy when events are not supported by kernel module / distro code yet. The driver is listening for events of devices added by default (`Asus keyboard` and `Asus WMI hotkeys`) or re-defined devices in custom configuration (e.g. `Lid Switch` and `Asus WMI accel tablet mode`). When is appropriate event caught then is handled by custom configuration. For example, can be toggled LED status or changed content of the control file (e.g. fan modes), sent another key event, or executed custom command. Configuration examples are [here](#Configuration) or predefined layouts [here](keys_wmi_layouts).
-
 [![License: GPLv2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-wmi-hotkeys-driver/v1.3.2.svg)](https://GitHub.com/asus-linux-drivers/asus-wmi-hotkeys-driver/commit/)
 ![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2Fasus-linux-drivers%2Fasus-wmi-hotkeys-driver&label=Visitors&icon=suit-heart-fill&color=%23e35d6a)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fasus-linux-drivers%2Fasus-wmi-hotkeys-driver&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
+The driver works as middle-man and can be especially handy when events are not supported by kernel module / distro code yet. The driver is listening for events of devices added by default (`Asus keyboard` and `Asus WMI hotkeys`) or re-defined devices in custom configuration (e.g. `Lid Switch` and `Asus WMI accel tablet mode`). When is appropriate event caught then is handled by custom configuration. For example, can be toggled LED status or changed content of the control file (e.g. fan modes), sent another key event, or executed custom command. Configuration examples are [here](#Configuration) or predefined layouts [here](keys_wmi_layouts).
 
 If you find the project useful, do not forget to give project a [![GitHub stars](https://img.shields.io/github/stars/asus-linux-drivers/asus-wmi-hotkeys-driver.svg?style=flat-square)](https://github.com/asus-linux-drivers/asus-wmi-hotkeys-driver/stargazers) People already did!
+
+[![BuyMeACoffee](https://img.shields.io/badge/Buy%20to%20maintainer%20a%20coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://ko-fi.com/ldrahnik)
 
 ## Changelog
 
