@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0 (16.12.2025)
+
+### Fixed
+
+- `dnf` detection + refactored how are package managers detected
+
+### Feature
+
+- Init `ux3405ma` layout
+
 ## 1.3.2 (15.9.2024)
 
 ### Fixed
