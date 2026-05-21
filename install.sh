@@ -87,6 +87,10 @@ LOGS_INSTALL_LOG_FILE_PATH="$LOGS_DIR_PATH/$LOGS_INSTALL_LOG_FILE_NAME"
 
     echo
 
+    source install_send_anonymous_dsdt_table.sh 
+
+    echo
+
     source install_service.sh
 
     echo
