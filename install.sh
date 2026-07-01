@@ -2,6 +2,10 @@
 
 source non_sudo_check.sh
 
+source install_security_check.sh
+
+echo
+
 LOGS_DIR_PATH="/var/log/asus-wmi-hotkeys-driver"
 
 source install_logs.sh
